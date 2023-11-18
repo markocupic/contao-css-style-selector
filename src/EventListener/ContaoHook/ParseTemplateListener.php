@@ -16,9 +16,10 @@ namespace Markocupic\ContaoCssStyleSelector\EventListener\ContaoHook;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Routing\ScopeMatcher;
-use Contao\StringUtil;
 use Contao\Template;
 use Doctrine\DBAL\Connection;
+use Markocupic\ContaoCssStyleSelector\ContentType\ContentTypeInterface;
+use Markocupic\ContaoCssStyleSelector\Util\ContentTypeUtil;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 #[AsHook('parseTemplate')]
@@ -28,27 +29,34 @@ final class ParseTemplateListener
         private readonly RequestStack $requestStack,
         private readonly ScopeMatcher $scopeMatcher,
         private readonly Connection $connection,
+        private readonly ContentTypeUtil $contentTypeUtil,
     ) {
     }
 
     public function __invoke(Template $template): void
     {
+
         $request = $this->requestStack->getCurrentRequest();
 
         if (!$this->scopeMatcher->isFrontendRequest($request)) {
             return;
         }
 
-        $arrDataTemplate = $template->getData();
+        $arrData = $template->getData();
 
-        if (str_contains($template->getName(), 'ce_') || str_contains($template->getName(), 'mod_')) {
-            $arrStyleIDS = StringUtil::deserialize($arrDataTemplate['cssStyleSelector'] ?? '', true);
+        /** @var array<ContentTypeInterface> $arrContentTypeHandlerInstances */
+        $arrContentTypeHandlerInstances = $this->contentTypeUtil->getContentTypeHandlerInstances($template->getName());
+
+        $arrClasses = explode(' ', (string) $template->class);
+
+        foreach ($arrContentTypeHandlerInstances as $contentTypeHandlerInstance) {
+            $arrStyleIDS = $contentTypeHandlerInstance->getCssStyle($arrData, $request);
 
             if (empty($arrStyleIDS)) {
-                return;
+                continue;
             }
 
-            $arrClasses = explode(' ', $arrDataTemplate['class'] ?? '');
+            $arrClasses = array_merge($arrClasses, explode(' ', $arrData['class'] ?? ''));
 
             foreach ($arrStyleIDS as $styleId) {
                 $arrStyle = $this->connection
@@ -60,12 +68,12 @@ final class ParseTemplateListener
                     )
                 ;
 
-                if (false !== $arrStyle && !$arrStyle['disableInContent'] && !empty($arrStyle['cssClasses'])) {
+                if (false !== $arrStyle && !$contentTypeHandlerInstance->isDisabled($arrStyle, $request) && !empty($arrStyle['cssClasses'])) {
                     $arrClasses = array_merge($arrClasses, explode(' ', $arrStyle['cssClasses']));
                 }
             }
-
-            $template->class = implode(' ', array_unique(array_filter($arrClasses)));
         }
+
+        $template->class = implode(' ', array_unique(array_filter($arrClasses)));
     }
 }

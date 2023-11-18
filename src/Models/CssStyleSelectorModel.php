@@ -69,17 +69,21 @@ class CssStyleSelectorModel extends Model
             return [];
         }
 
-        $t = self::$strTable;
         $objDatabase = Database::getInstance();
 
+        $arrGroups = [];
+
+        $result = $objDatabase->execute('SELECT * FROM tl_css_style_selector_group');
+
+        while ($result->next()) {
+            $arrGroups[$result->id] = $result->name;
+        }
+
+        $t = self::$strTable;
+
         $objCssStyleSelector = $objDatabase
-            ->prepare(
-                "SELECT id, styleDesignation, styleGroup, cssClasses FROM $t WHERE disableIn".ucfirst(
-                    $type
-                ).'=? ORDER BY styleGroup, styleDesignation'
-            )
-            ->execute(0)
-        ;
+            ->prepare("SELECT id, styleDesignation, styleGroup, cssClasses FROM $t WHERE disableIn".ucfirst($type)."=? ORDER BY styleGroup, styleDesignation")
+            ->execute(0);
 
         $styles = [];
 
@@ -91,7 +95,11 @@ class CssStyleSelectorModel extends Model
             }
 
             if ($item['styleGroup']) {
-                $styles[$item['styleGroup']][$item['id']] = $value;
+                if (!empty($arrGroups[$item['styleGroup']])) {
+                    $styles[$arrGroups[$item['styleGroup']]][] = $value;
+                } else {
+                    $styles[$item['styleGroup']][] = $value;
+                }
             } else {
                 $styles[$item['id']] = $value;
             }
@@ -103,7 +111,7 @@ class CssStyleSelectorModel extends Model
             }
         }
 
-        natsort($styles);
+        ksort($styles);
 
         return $styles;
     }

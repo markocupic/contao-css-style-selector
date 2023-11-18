@@ -128,13 +128,6 @@ $GLOBALS['TL_DCA']['tl_css_style_selector'] = [
             'inputType' => 'checkbox',
             'sql'       => "int(1) NOT NULL default '0'",
         ],
-        'disableInCalendarEvent' => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInCalendarEvent'],
-            'exclude'   => true,
-            'filter'    => true,
-            'inputType' => 'checkbox',
-            'sql'       => "int(1) NOT NULL default '0'",
-        ],
         'disableInContent'       => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInContent'],
             'exclude'   => true,
@@ -170,13 +163,7 @@ $GLOBALS['TL_DCA']['tl_css_style_selector'] = [
             'inputType' => 'checkbox',
             'sql'       => "int(1) NOT NULL default '0'",
         ],
-        'disableInNews'          => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInNews'],
-            'exclude'   => true,
-            'filter'    => true,
-            'inputType' => 'checkbox',
-            'sql'       => "int(1) NOT NULL default '0'",
-        ],
+
         'disableInPage'          => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInPage'],
             'exclude'   => true,

@@ -1,9 +1,41 @@
 services:
-  _defaults:
-    autowire: true
-    autoconfigure: true
-    public: false
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-  Markocupic\ContaoCssStyleSelector\:
-    resource: ../src
-    exclude: ../src/{Client,Model,Tests}
+    Markocupic\ContaoCssStyleSelector\:
+        resource: ../src
+        exclude: [ ../src/{ Client,ContentType,Model,Tests } ]
+
+    _instanceof:
+        Markocupic\ContaoCssStyleSelector\ContentType\ContentTypeInterface:
+            tags: [ 'markocupic_css_style_selector.content_type_handler' ]
+
+    Markocupic\ContaoCssStyleSelector\ContentType\ContentTypePage:
+        tags:
+            - { name: markocupic_css_style_selector.content_type_handler, priority: 180 }
+
+    Markocupic\ContaoCssStyleSelector\ContentType\ContentTypeArticle:
+        tags:
+            - { name: markocupic_css_style_selector.content_type_handler, priority: 170 }
+
+    Markocupic\ContaoCssStyleSelector\ContentType\ContentTypeFrontendModule:
+        tags:
+            - { name: markocupic_css_style_selector.content_type_handler, priority: 160 }
+
+    Markocupic\ContaoCssStyleSelector\ContentType\ContentTypeContentElement:
+        tags:
+            - { name: markocupic_css_style_selector.content_type_handler, priority: 150 }
+
+    Markocupic\ContaoCssStyleSelector\ContentType\ContentTypeLayout:
+        tags:
+            - { name: markocupic_css_style_selector.content_type_handler, priority: 140 }
+
+    Markocupic\ContaoCssStyleSelector\ContentType\ContentTypeForm:
+        tags:
+            - { name: markocupic_css_style_selector.content_type_handler, priority: 130 }
+
+    Markocupic\ContaoCssStyleSelector\ContentType\ContentTypeFormField:
+        tags:
+            - { name: markocupic_css_style_selector.content_type_handler, priority: 120 }

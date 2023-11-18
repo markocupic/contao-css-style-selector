@@ -36,8 +36,6 @@ class CssStyleSelectorInternalListener
             'disableInContent',
             'disableInForm',
             'disableInFormField',
-            'disableInNews',
-            'disableInCalendarEvent',
             'disableInLayout',
             'disableInModule',
         ];
@@ -64,8 +62,6 @@ class CssStyleSelectorInternalListener
             'contentEnabled',
             'formEnabled',
             'formFieldEnabled',
-            'newsEnabled',
-            'calendarEventEnabled',
             'layoutEnabled',
             'moduleEnabled',
         ];
