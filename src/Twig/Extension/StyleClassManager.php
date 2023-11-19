@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Markocupic\ContaoCssStyleSelector\Twig\Extension;
 
-use Contao\CoreBundle\Framework\Adapter;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
@@ -24,8 +23,6 @@ use Twig\TwigFunction;
 
 class StyleClassManager extends AbstractExtension
 {
-    private Adapter $member;
-
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly ScopeMatcher $scopeMatcher,
@@ -36,39 +33,39 @@ class StyleClassManager extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('get_style_classes', [$this, 'getStyleClasses']),
+            new TwigFunction('get_style_classes', [$this, 'getStyleClasses'], ['needs_context' => true]),
         ];
     }
 
     /**
      * Append the additional style classes that have been set in the content element.
      */
-    public function getStyleClasses(array $dataTemplate): string
+    public function getStyleClasses(array $_context): string
     {
-        $origClasses = $dataTemplate['element_css_classes'] ?? '';
+        $origElementCssClasses = $_context['element_css_classes'] ?? '';
 
         $request = $this->requestStack->getCurrentRequest();
 
         if (!$this->scopeMatcher->isFrontendRequest($request)) {
-            return $origClasses;
+            return $origElementCssClasses;
         }
 
-        $dataContentElement = $dataTemplate['data'] ?? [];
+        $rowContentElement = $_context['data'] ?? [];
 
         if (empty($dataContentElement)) {
-            return $origClasses;
+            return $origElementCssClasses;
         }
 
-        $arrStyleIDS = StringUtil::deserialize($dataContentElement['cssStyleSelector'] ?? '', true);
+        $arrStyleIDS = StringUtil::deserialize($rowContentElement['cssStyleSelector'] ?? '', true);
 
         if (empty($arrStyleIDS)) {
-            return $origClasses;
+            return $origElementCssClasses;
         }
 
-        $arrClasses = explode(' ', $origClasses);
+        $arrElementCssClasses = explode(' ', $origElementCssClasses);
 
         foreach ($arrStyleIDS as $styleId) {
-            $arrStyle = $this->connection
+            $rowCssStyle = $this->connection
                 ->fetchAssociative(
                     'SELECT * FROM tl_css_style_selector WHERE id = ?',
                     [
@@ -77,11 +74,11 @@ class StyleClassManager extends AbstractExtension
                 )
             ;
 
-            if (false !== $arrStyle && !$arrStyle['disableInContent']) {
-                $arrClasses = array_merge($arrClasses, explode(' ', $arrStyle['cssClasses']));
+            if (false !== $rowCssStyle && !$rowCssStyle['disableInContent']) {
+                $arrElementCssClasses = array_merge($arrElementCssClasses, explode(' ', $rowCssStyle['cssClasses']));
             }
         }
 
-        return implode(' ', array_filter(array_unique($arrClasses)));
+        return implode(' ', array_filter(array_unique($arrElementCssClasses)));
     }
 }
