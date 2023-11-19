@@ -47,7 +47,7 @@ class CssStyleSelectorModel extends Model
         ];
     }
 
-    public static function getTypeByTable(string $table): string
+    public static function getTypeByTable(string $table): ?string
     {
         return match ($table) {
             'tl_article' => self::TYPE_ARTICLE,

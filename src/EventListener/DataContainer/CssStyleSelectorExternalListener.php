@@ -35,7 +35,7 @@ class CssStyleSelectorExternalListener
     {
         $type = CssStyleSelectorModel::getTypeByTable($dc->table);
 
-        if (!$type) {
+        if (null === $type) {
             return [];
         }
 
