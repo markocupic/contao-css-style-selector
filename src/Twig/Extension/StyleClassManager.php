@@ -43,7 +43,6 @@ class StyleClassManager extends AbstractExtension
     public function getStyleClasses(array $_context): string
     {
         $origElementCssClasses = $_context['element_css_classes'] ?? '';
-
         $request = $this->requestStack->getCurrentRequest();
 
         if (!$this->scopeMatcher->isFrontendRequest($request)) {
@@ -52,7 +51,7 @@ class StyleClassManager extends AbstractExtension
 
         $rowContentElement = $_context['data'] ?? [];
 
-        if (empty($dataContentElement)) {
+        if (empty($rowContentElement)) {
             return $origElementCssClasses;
         }
 
