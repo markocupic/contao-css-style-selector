@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of Contao CSS Style Selector.
  *
- * (c) Marko Cupic 2023 <m.cupic@gmx.ch>
+ * (c) Marko Cupic <m.cupic@gmx.ch>
  * @license MIT
  * For the full copyright and license information,
  * please view the LICENSE file that was distributed with this source code.
@@ -20,7 +20,9 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
+#[AsTaggedItem('twig.extension')]
 class StyleClassManager extends AbstractExtension
 {
     public function __construct(
