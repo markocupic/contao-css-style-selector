@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_css_style_selector'] = [
                 'label'      => &$GLOBALS['TL_LANG']['tl_css_style_selector']['delete'],
                 'href'       => 'act=delete',
                 'icon'       => 'delete.gif',
-                'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
+                'attributes' => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null) . '\'))return false;Backend.getScrollOffset()"',
             ],
             'show'   => [
                 'label' => &$GLOBALS['TL_LANG']['tl_css_style_selector']['show'],
@@ -90,13 +90,13 @@ $GLOBALS['TL_DCA']['tl_css_style_selector'] = [
     ],
     // Fields
     'fields'   => [
-        'id'                     => [
+        'id'                 => [
             'sql' => "int(10) unsigned NOT NULL auto_increment",
         ],
-        'tstamp'                 => [
+        'tstamp'             => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'styleDesignation'       => [
+        'styleDesignation'   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['styleDesignation'],
             'exclude'   => true,
             'search'    => true,
@@ -104,7 +104,7 @@ $GLOBALS['TL_DCA']['tl_css_style_selector'] = [
             'eval'      => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'sql'       => "varchar(255) NOT NULL default ''",
         ],
-        'styleGroup'             => [
+        'styleGroup'         => [
             'label'      => &$GLOBALS['TL_LANG']['tl_css_style_selector']['styleGroup'],
             'exclude'    => true,
             'inputType'  => 'select',
@@ -114,49 +114,49 @@ $GLOBALS['TL_DCA']['tl_css_style_selector'] = [
             'sql'        => "int(10) unsigned NOT NULL default 0",
             'relation'   => ['table' => 'tl_css_style_selector_group', 'type' => 'hasOne', 'load' => 'lazy'],
         ],
-        'cssClasses'             => [
+        'cssClasses'         => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['cssClasses'],
             'exclude'   => true,
             'inputType' => 'text',
             'eval'      => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'alphanumeric', 'tl_class' => 'w50'],
             'sql'       => "varchar(255) NOT NULL default ''",
         ],
-        'disableInArticle'       => [
+        'disableInArticle'   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInArticle'],
             'exclude'   => true,
             'filter'    => true,
             'inputType' => 'checkbox',
             'sql'       => "int(1) NOT NULL default '0'",
         ],
-        'disableInContent'       => [
+        'disableInContent'   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInContent'],
             'exclude'   => true,
             'filter'    => true,
             'inputType' => 'checkbox',
             'sql'       => "int(1) NOT NULL default '0'",
         ],
-        'disableInForm'          => [
+        'disableInForm'      => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInForm'],
             'exclude'   => true,
             'filter'    => true,
             'inputType' => 'checkbox',
             'sql'       => "int(1) NOT NULL default '0'",
         ],
-        'disableInFormField'     => [
+        'disableInFormField' => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInFormField'],
             'exclude'   => true,
             'filter'    => true,
             'inputType' => 'checkbox',
             'sql'       => "int(1) NOT NULL default '0'",
         ],
-        'disableInLayout'        => [
+        'disableInLayout'    => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInLayout'],
             'exclude'   => true,
             'filter'    => true,
             'inputType' => 'checkbox',
             'sql'       => "int(1) NOT NULL default '0'",
         ],
-        'disableInModule'        => [
+        'disableInModule'    => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInModule'],
             'exclude'   => true,
             'filter'    => true,
@@ -164,38 +164,38 @@ $GLOBALS['TL_DCA']['tl_css_style_selector'] = [
             'sql'       => "int(1) NOT NULL default '0'",
         ],
 
-        'disableInPage'          => [
+        'disableInPage'        => [
             'label'     => &$GLOBALS['TL_LANG']['tl_css_style_selector']['disableInPage'],
             'exclude'   => true,
             'filter'    => true,
             'inputType' => 'checkbox',
             'sql'       => "int(1) NOT NULL default '0'",
         ],
-        'articleEnabled'         => [
+        'articleEnabled'       => [
             'label' => &$GLOBALS['TL_LANG']['tl_css_style_selector']['articleEnabled'],
         ],
-        'calendarEventEnabled'   => [
+        'calendarEventEnabled' => [
             'label' => &$GLOBALS['TL_LANG']['tl_css_style_selector']['calendarEventEnabled'],
         ],
-        'contentEnabled'         => [
+        'contentEnabled'       => [
             'label' => &$GLOBALS['TL_LANG']['tl_css_style_selector']['contentEnabled'],
         ],
-        'formEnabled'            => [
+        'formEnabled'          => [
             'label' => &$GLOBALS['TL_LANG']['tl_css_style_selector']['formEnabled'],
         ],
-        'formFieldEnabled'       => [
+        'formFieldEnabled'     => [
             'label' => &$GLOBALS['TL_LANG']['tl_css_style_selector']['formFieldEnabled'],
         ],
-        'layoutEnabled'          => [
+        'layoutEnabled'        => [
             'label' => &$GLOBALS['TL_LANG']['tl_css_style_selector']['layoutEnabled'],
         ],
-        'moduleEnabled'          => [
+        'moduleEnabled'        => [
             'label' => &$GLOBALS['TL_LANG']['tl_css_style_selector']['moduleEnabled'],
         ],
-        'newsEnabled'            => [
+        'newsEnabled'          => [
             'label' => &$GLOBALS['TL_LANG']['tl_css_style_selector']['newsEnabled'],
         ],
-        'pageEnabled'            => [
+        'pageEnabled'          => [
             'label' => &$GLOBALS['TL_LANG']['tl_css_style_selector']['pageEnabled'],
         ],
     ],
